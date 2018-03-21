@@ -1,0 +1,277 @@
+<!Doctype html>
+<html lang="ja">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0">
+  <link rel="stylesheet" href="./css/reset.css">
+  <link rel="stylesheet" href="./css/style.css">
+  <script type="text/javascript" src="./jquery/jquery-3.3.1.min.js"></script>
+  <link rel="stylesheet" href="css/jquery.bxslider.min.css">
+  <script src="js/jquery.bxslider.min.js"></script>
+
+  <script type="text/javascript">
+    var windowWidth = $(window).width();
+    var windowHeight = $(window).height();
+    var flag = 1;// 1は閉じている状態
+    var mql = window.matchMedia('screen and (max-width: 800px)');
+    function close() {
+      $('ul.global-nav-list').slideUp(300);
+    }
+    function toggle() {
+      $('ul.global-nav-list').slideToggle(300);
+    }
+    function open() {
+        $('nav.CP-nav').css('height','180px').slideDown(300);
+    }
+    function close2() {
+        if (mql.matches) {
+            $('li.at').addClass('slide-up').removeClass('slide-down');
+            $('ul.CP-nav-list').removeClass('through');
+            $('nav.CP-nav').css('z-index', 1).css('height',0);
+            flag = 1;
+        }else {
+            $('nav.CP-nav').slideUp(300);
+        }
+    }
+    function toggle2() {
+          if(flag === 1){$('li.at').addClass('slide-down').removeClass('slide-up'); $('ul.CP-nav-list').addClass('through');$('nav.CP-nav').css('z-index',3).css('height','180px'); flag = 2;}
+          else{$('ul.CP-nav-list').removeClass('through'); $('li.at').addClass('slide-up').removeClass('slide-down');$('nav.CP-nav').css('z-index',1).css('height',0);  flag = 1;}
+
+        }
+
+    $(function(){
+      $('a[href^="#"]').click(function(){
+        var speed = 300;
+        var href= $(this).attr("href");
+        var target = $(href === "#" || href === "" ? 'html' : href);
+        var position = target.offset().top;
+        $("html, body").animate({scrollTop:position}, speed, "swing");
+        return false;
+      });
+    });
+
+    function checkBreakPoint(mql) {
+        windowHeight = $(window).height();
+        if (mql.matches) {
+            // スマホ向け
+            $(function () {
+                $('section.top').css('height',windowHeight - 50 + 'px');
+                $('ul.global-nav-list').css('display',"none");
+                $('nav.CP-nav').css('display',"block").css('z-index', 1).css('height',0);
+                $('nav.global-nav').css('width',windowWidth).css('height',"");
+
+                $('li.at').addClass('slide-up').removeClass('slide-down');
+                $('ul.CP-nav-list').removeClass('through');
+                flag = 1;
+            });
+
+            $(function(){
+                $('li.CP-wrap').unbind('mouseenter',open);
+            });
+
+            $(function(){
+                $('li.no-wrap').unbind('mouseenter',close2);
+            });
+
+            $(function(){
+                $('header').unbind('mouseleave',close2);
+            });
+
+            $(function(){
+                $('div.menu-trigger').click(close2).click(toggle);
+            });
+
+            $(function () {
+                $('a.nav').click(close2).click(close);
+            });
+            $(function () {
+                $('a.header-link').click(close).click(close2);
+            });
+            $(function () {
+                $('div.tri').click(toggle2);
+            });
+        } else {
+            // PC向け
+
+            $(function () {
+                $('section.top').css('height',windowHeight - 75 + 'px');
+                $('nav.global-nav').css('width',"403px").css('height',"55px");
+                $('ul.global-nav-list').css('display',"inline-flex");
+            });
+
+            $(function(){
+                $('div.menu-trigger').unbind('click',toggle).unbind('click',close2);
+            });
+
+            $(function(){
+                $('a.nav').unbind('click',close).unbind('click',close2);
+            });
+
+            $(function(){
+                $('a.header-link').unbind('click',close).unbind('click',close2);
+            });
+            $(function () {
+                $('div.tri').unbind('click',toggle2);
+            });
+
+            $(function () {
+                $('li.CP-wrap').mouseenter(open);
+            });
+            $(function () {
+                $('li.no-wrap').mouseenter(close2);
+            });
+            $(function () {
+                $('header').mouseleave(close2);
+            });
+
+            $(window).on('load resize', function(){
+                $(function () {
+                    var off = $('#CP-start').offset();
+                    $('nav.CP-nav').css('left',off.left);
+                });
+            });
+        }
+    }
+
+      // ブレイクポイントの瞬間に発火
+      mql.addListener(checkBreakPoint);
+
+      // 読み込み時に動作させる
+      checkBreakPoint(mql);
+
+  </script>
+
+  <script>
+  $(document).ready(function(){
+    $('.slider').bxSlider({
+      auto: true
+    });
+  });
+ </script>
+</head>
+
+<body>
+  <header class="header">
+    <a href="#top" class="header-link">
+      <img class="header_img" src="./images/black_bulb.png" alt="eeic">
+      <div class="top-text">
+        <p class="up">EEIC 五月祭展示</p>
+        <p class="down">近未来体験2018</p>
+      </div>
+    </a>
+
+    <div class="menu-trigger">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+      <nav class="global-nav" style="width: 1920px;">
+        <ul class="global-nav-list" style="display: none;">
+          <li class="nav-item no-wrap"><a href="#contents" class="nav">催し一覧</a></li>
+          <li class="nav-item no-wrap at slide-up"><a href="#access" class="nav">アクセス</a></li>
+          <li class="nav-item no-wrap"><a href="#links" class="nav">リンク</a></li>
+        </ul>
+      </nav>
+    </header>
+  <section class="under-header" id="top"></section>
+
+
+
+
+   <!--<img class="top-img" src="./images/black_bulb.png" alt="電球">
+   <h2 class="eeic">EEIC</h2>-->
+   <p class="top1">東京大学工学部<br class="mobile">電子情報・電気電子工学科 <br class="mobile">五月祭展示</p>
+   <h1>近未来体験<br class="mobile">2018</h1>
+
+   <section class="fB" id="about">
+       <b>日時</b><br>
+       2017年5月20日(土)・21日(日) <br class="mobile">9:00-18:00
+     </p>
+     <p class="about-text">
+       <b>会場</b><br>
+       東京大学本郷キャンパス<br>
+       工学部2・3・13号館
+     </p>
+   </section>
+
+
+ <div class="lSlider">
+ <div class="slider">
+   <div class="topImg"><img src="images/1.jpg" style="width:100%;"></div>
+   <div class="topImg"><img src="images/2.jpg" style="width:100%;"></div>
+ </div>
+</div>
+
+ <section class="factor" id="contents">
+   <h2 class="heading">催し一覧</h2>
+   <div class="contents-wrapper">
+     <div class="contents-box">
+      <a href="programming.html"> <img class="contents-img" src="./images/programming.png" alt="プログラミング教室"></a>
+      <a href="programming.html"><h3>プログラミング教室</h3></a>
+       <p class="contents-text">
+     </div>
+     <div class="contents-box">
+       <a href="ework.html"><img class="contents-img" src="./images/ework.png" alt="電子工作教室"></a>
+       <a href="ework.html"><h3>電子工作教室</h3></a>
+     </div>
+     <div class="contents-box">
+       <a href="vr.html"><img class="contents-img" src="./images/vr.png" alt="VR体験"></a>
+       <a href="vr.html"><h3>VR体験</h3></a>
+     </div>
+       <div class="contents-box">
+         <a href="eeicfind.html"><img class="contents-img" src="./images/eeicfind.png" alt="eeicfind"></a>
+         <a href="eeicfind.html"><h3>EEIC find</h3></a>
+       </div>
+         <div class="contents-box">
+           <a href="paper.html"><img class="contents-img" src="./images/paper.png" alt="優秀卒論発表"></a>
+           <a href="paper.html"><h3>優秀卒論発表</h3></a>
+         </div>
+         <div class="contents-box">
+           <a href="bdm.html"><img class="contents-img" src="./images/bdm.png" alt="展示"></a>
+           <a href="bdm.html"><h3>学生製作物展示</h3></a>
+         </div>
+         <div class="contents-box">
+           <a href="lab.html"><img class="contents-img" src="./images/lab.png" alt="展示"></a>
+           <a href="lab.html"><h3>研究室展示</h3></a>
+         </div>
+
+   </div>
+ </section>
+ <section class="factor" id="access">
+   <h2 class="heading">アクセス</h2>
+   <div class="access-box">
+     <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3239.486358958482!2d139.75965870080654!3d35.71425548567039!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60188c31ccfe03e1%3A0x3d9424d7feac6c9f!2z44CSMTEzLTAwMzMg5p2x5Lqs6YO95paH5Lqs5Yy65pys6YO377yX5LiB55uu77yTIOadseS6rOWkp-WtpuacrOmDt-OCreODo-ODs-ODkeOCueW3peWtpumDqO-8kuWPt-mkqA!5e0!3m2!1sja!2sjp!4v1491390789035"
+             width="550" height="400" frameborder="0" style="border:0" allowfullscreen
+     class="map"></iframe>
+     <p class="access-text">
+       <b>会場</b><br>
+       東京大学本郷キャンパス<br>
+       工学部2・3・13号館
+       <br><br>
+       本郷三丁目駅から徒歩17分<br>
+       東大前駅から徒歩800分<br>
+       根津駅から徒歩7分
+     </p>
+   </div>
+ </section>
+ <section class="factor" id="links">
+   <h2 class="heading">リンク</h2>
+   <div class="contents-wrapper">
+     <a href="http://ut-mech.com" target="_blank" class="contents-box links">
+       <img class="link-img" src="./images/mech.jpg" alt="機械工学科・機械情報工学科学生展示">
+       <h4>工学部 <br class="mini-mobile">機械工学科・機械情報工学科</h4>
+     </a>
+     <a href="https://ap-phys.net/" target="_blank" class="contents-box links">
+       <img class="link-img" src="./images/bukko.png" alt="計数物理工学科">
+       <h4>工学部 計数工学科・物理工学科</h4>
+     </a>
+   </div>
+ </section>
+ <footer class="footer">
+   <p class="copyright">Copyright &copy; EEIC 五月祭展示<br class="mobile">「近未来体験2017」All rights reserved.</p>
+ </footer>
+</body>
+</html>
+
+</body>
